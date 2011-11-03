@@ -44,6 +44,7 @@ setup(name='Products.PloneKeywordManager',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
+          'raptus.multilanguageplone',
       ],
       entry_points="""
       # -*- Entry points: -*-
