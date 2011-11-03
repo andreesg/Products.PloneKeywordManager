@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-version = '1.10dev'
+version = '1.9multilanguagefields'
 
 long_description = (
     read('README.txt')
