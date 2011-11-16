@@ -5,9 +5,16 @@
   xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
   i18n_domain="Products.PloneKeywordManager">
 
+
+  <permission
+        id="plone_keyword_manager.UsePloneKeywordManager"
+        title="Use PloneKeywordManager"
+  />
+	 
   <!-- Include configuration for dependencies listed in setup.py -->
   <includeDependencies package="." />
-
+  <include package=".browser" />
+  
   <!-- register all skins-folders all at once -->
   <cmf:registerDirectory name="skins" directory="skins" recursive="True" />
 

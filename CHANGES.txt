@@ -2,10 +2,12 @@ Changelog
 =========
 
 
-1.10 (unreleased)
+1.10-kwmanager_permission (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Fixed italian translations [micecchi]
+- Removed templates and created a view to manage keywords [micecchi]
+- Created new permission to access PloneKeywordManager tool [micecchi]
 
 
 1.9 (2011-06-22)

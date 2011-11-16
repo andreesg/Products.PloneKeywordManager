@@ -231,6 +231,9 @@ class PloneKeywordManager(UniqueObject, SimpleItem):
         """
         fieldName = self.fieldNameForIndex(indexName)
         fieldObj = obj.getField(fieldName) or obj.getField(fieldName.lower())
+        if not fieldObj and fieldName.startswith('get'):
+            fieldName=fieldName.lstrip('get')
+            fieldObj = obj.getField(fieldName) or obj.getField(fieldName.lower())
         if fieldObj is not None:
             return fieldObj.getMutator(obj)
 
