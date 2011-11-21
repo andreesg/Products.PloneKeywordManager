@@ -130,7 +130,6 @@ class PloneKeywordManager(UniqueObject, SimpleItem):
             raise ValueError, "%s is not a valid field" % indexName
 
         catalog = getToolByName(self, 'portal_catalog')
-
         #why work hard if we don't have to?
         #if hasattr(catalog,'uniqueValuesFor'):
         keywords = list(catalog.uniqueValuesFor(indexName))

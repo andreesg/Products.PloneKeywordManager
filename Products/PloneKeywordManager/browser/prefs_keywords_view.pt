@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="context/prefs_main_template/macros/master"
-      i18n:domain="plone">
+      i18n:domain="Products.PloneKeywordManager">
 
 <tal:block metal:fill-slot="top_slot">
    <tal:block tal:define="dummy python:request.set('disable_border',1)" />
@@ -18,7 +18,6 @@
                  pkm    context/portal_keyword_manager;
                  catalogSubjects python:pkm.getKeywords(context=context,indexName=field);
 		 show_filters python: len(catalogSubjects) > many_kws;">
-
   <h1 i18n:translate="heading_keyword_manager">Keyword Manager</h1>
 
     <a href=""

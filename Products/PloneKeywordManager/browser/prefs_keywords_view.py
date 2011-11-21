@@ -1,6 +1,6 @@
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFPlone import PloneMessageFactory as _
+from Products.PloneKeywordManager import keywordmanagerMessageFactory as _
 from Products.CMFCore.utils import getToolByName
 
 class PrefsKeywordsView(BrowserView):

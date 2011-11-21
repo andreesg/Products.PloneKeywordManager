@@ -35,8 +35,11 @@ cmf_keyword_manager_globals=globals()
 registerPermissions([(config.MANAGE_KEYWORDS_PERMISSION,[])],
     ('Manager',))
 
+from zope.i18nmessageid import MessageFactory
+
+keywordmanagerMessageFactory = MessageFactory('Products.PloneKeywordManager')
+
 def initialize(context):
-    registerDirectory('skins', cmf_keyword_manager_globals)
 
     new_tool = ToolInit(config.TOOL_NAME,
                     tools=(tool.PloneKeywordManager, ),
