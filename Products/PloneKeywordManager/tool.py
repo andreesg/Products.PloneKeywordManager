@@ -250,11 +250,13 @@ class PloneKeywordManager(UniqueObject, SimpleItem):
         idxs = [i.id for i in idxs if i.meta_type == config.META_TYPE and
                 i.id not in config.IGNORE_INDEXES]
 
+        new_idx = [idx for idx in idxs if 'priref' not in idx]
+        
         # INTEGRATION
         if context:
-            idxs.sort(key=lambda x:context.translate(MessageFactory(x)))
+            new_idx.sort(key=lambda x:context.translate(MessageFactory(x)))
         else:
-            idxs.sort()
+            new_idx.sort()
         return idxs
 
     security.declarePrivate('fieldNameForIndex')
