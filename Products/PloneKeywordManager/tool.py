@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 # Copyright (c) 2005 gocept gmbh & co. kg
 # See also LICENSE.txt
 # $Id: tool.py 47645 2007-08-20 14:59:10Z glenfant $
@@ -46,6 +49,8 @@ from Products.CMFCore import permissions as CMFCorePermissions
 # Sibling imports
 from Products.PloneKeywordManager.interfaces import IPloneKeywordManager
 from Products.PloneKeywordManager import config
+from zope.i18nmessageid import MessageFactory as msgfactory
+MessageFactory = msgfactory('collective.object')
 
 try:
     from plone.dexterity.interfaces import IDexterityContent
@@ -178,8 +183,12 @@ class PloneKeywordManager(UniqueObject, SimpleItem):
 
         catalog = getToolByName(self, 'portal_catalog')
         keywords = list(catalog.uniqueValuesFor(indexName))
-        keywords.sort(key=lambda x:x.lower())
-        return keywords
+
+        ## INTEGRATION
+        new_keywords = [k for k in keywords if type(k) != list]
+        new_keywords.sort(key=lambda x:x.lower())
+        
+        return new_keywords
 
     security.declarePublic('getScoredMatches')
     def getScoredMatches(self, word, possibilities, num, score, context=None):
@@ -231,7 +240,7 @@ class PloneKeywordManager(UniqueObject, SimpleItem):
             raise Unauthorized("You don't have the necessary permissions to "
                                "access %r." % context)
 
-    def getKeywordIndexes(self):
+    def getKeywordIndexes(self, context=None):
         """Gets a list of indexes from the catalog. Uses config.py to choose the
         meta type and filters out a subset of known indexes that should not be
         managed.
@@ -240,7 +249,12 @@ class PloneKeywordManager(UniqueObject, SimpleItem):
         idxs = catalog.index_objects()
         idxs = [i.id for i in idxs if i.meta_type == config.META_TYPE and
                 i.id not in config.IGNORE_INDEXES]
-        idxs.sort()
+
+        # INTEGRATION
+        if context:
+            idxs.sort(key=lambda x:context.translate(MessageFactory(x)))
+        else:
+            idxs.sort()
         return idxs
 
     security.declarePrivate('fieldNameForIndex')

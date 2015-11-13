@@ -15,7 +15,7 @@
                  score  python:request.get('score',  0.6);
                  num    python:request.get('num',7);
                  field  python:request.get('field','Subject');
-                 many_kws python: 20;
+                 many_kws python: 1;
                  pkm    context/portal_keyword_manager;
                  catalogSubjects python:pkm.getKeywords(context=context,indexName=field);
                  show_filters python: len(catalogSubjects) > many_kws;">
@@ -35,7 +35,7 @@
     The Keyword Manager allows you to delete and merge keywords in your portal.
     </div>
 
-      <tal:kw_fields tal:define="kwfields pkm/getKeywordIndexes"
+      <tal:kw_fields tal:define="kwfields python: pkm.getKeywordIndexes(context=context)"
                      tal:condition="python:len(kwfields)>1">
         <form action="prefs_keywords_view" method="get"
               tal:attributes="action string:${context/absolute_url}/prefs_keywords_view">
@@ -55,7 +55,7 @@
                             tal:attributes="value fld;
                                             selected python:fld==field;"
                             i18n:translate=""
-                            i18n:domain="plone"
+                            i18n:domain="collective.object"
                             tal:content="python:fld.replace('get','',1)" />
                 </select>
             </div>
@@ -72,6 +72,7 @@
       </tal:kw_fields>
 
   <tal:site_has_keywords condition="python:len(catalogSubjects) > 0">
+    
     <form action="prefs_keywords_view" method="get"
           tal:attributes="action string:${context/absolute_url}/prefs_keywords_view"
           tal:condition="show_filters">
@@ -131,10 +132,12 @@
           <select id="select_keyword_list" name="search"
                   onchange="javascript:this.form.submit()">
             <option value="" i18n:translate="label_select">Select...</option>
+           
            <tal:block tal:repeat="subject catalogSubjects">
             <option tal:content="subject"
                     tal:attributes="selected python:subject==search">Subject</option>
            </tal:block>
+          
           </select>
 
         </div>
@@ -178,7 +181,7 @@
                <label tal:content="subject" tal:attributes="for string:subject-${subject_id};">
                  Subject</label>
                <a href="#"
-                   tal:attributes="href string:${portal_url}/@@search?Subject=${subject}"><img tal:attributes="src string:${portal_url}/search_icon.png" /></a>
+                   tal:attributes="href string:${portal_url}/@@search?${field}=${subject}"><img tal:attributes="src string:${portal_url}/search_icon.png" /></a>
          </dt>
          <dd>
            <span tal:repeat="item python:pkm.getScoredMatches(subject, catalogSubjects, num, score, context=context)" style="white-space: nowrap;">
@@ -190,7 +193,7 @@
                                       onclick string: document.forms['keyword_edit_form'].changeto.value='${item}';; return true;;" />
                <label tal:content="item" tal:attributes="for string:item-${item_id};">Subject</label>
                <a href="#"
-                   tal:attributes="href string:${portal_url}/@@search?Subject=${subject}"><img tal:attributes="src string:${portal_url}/search_icon.png" /></a>
+                   tal:attributes="href string:${portal_url}/@@search?${field}=${subject}"><img tal:attributes="src string:${portal_url}/search_icon.png" /></a>
              </span>
            </span>
          </dd>
