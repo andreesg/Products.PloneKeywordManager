@@ -106,6 +106,7 @@ class PloneKeywordManager(UniqueObject, SimpleItem):
             old_keywords = [k.decode('utf8') if isinstance(k, str) else k for k in old_keywords]
             query[indexName] = old_keywords
             querySet = self._query(**query)
+
         for item in querySet:
             obj = item.getObject()
             # #MOD Dynamic field getting
@@ -130,7 +131,11 @@ class PloneKeywordManager(UniqueObject, SimpleItem):
                 # #MOD Dynamic field update
 
             updateField = self.getSetter(obj, indexName)
-            if updateField is not None:
+
+            if indexName == 'fieldCollection_fieldCollection_place':
+                setattr(obj, 'fieldCollection_fieldCollection_places', value)
+                obj.reindexObject(idxs=[indexName])
+            elif updateField is not None:
                 updateField(value)
                 idxs = self._getFullIndexList(indexName)
                 obj.reindexObject(idxs=idxs)
@@ -312,6 +317,9 @@ class PloneKeywordManager(UniqueObject, SimpleItem):
 
     def getFieldValue(self, obj, indexName):
         fieldName = self.fieldNameForIndex(indexName)
+        if indexName == 'fieldCollection_fieldCollection_place':
+            fieldName = 'fieldCollection_fieldCollection_places'
+
         fieldVal = getattr(obj, fieldName, ())
         if not fieldVal and fieldName.startswith('get'):
             fieldName = fieldName.lstrip('get_')
